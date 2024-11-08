@@ -69,5 +69,4 @@ function getRandomColor() {
   return { r, g, b };
 }
 
-// Start the game initially
 startGame();
