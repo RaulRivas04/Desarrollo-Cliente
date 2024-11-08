@@ -1,72 +1,72 @@
-let correctColor;
-let lives = 3;
-let difficulty = 'hard';
+let colorCorrecto;
+let vidas = 3;
+let dificultad = 'difícil';
 
-function startGame() {
-  lives = 3;
-  updateLives();
-  document.getElementById("message").textContent = "";
+function iniciarJuego() {
+  vidas = 3;
+  actualizarVidas();
+  document.getElementById("mensaje").textContent = "";
   
-  const numOptions = difficulty === 'easy' ? 3 : 6;
-  const colorOptionsContainer = document.querySelector(".color-options");
-  colorOptionsContainer.innerHTML = "";
+  const numOpciones = dificultad === 'fácil' ? 3 : 6;
+  const contenedorOpcionesColor = document.querySelector(".opciones-color");
+  contenedorOpcionesColor.innerHTML = "";
   
-  correctColor = getRandomColor();
-  document.getElementById("rgb-value").textContent = `RGB(${correctColor.r}, ${correctColor.g}, ${correctColor.b})`;
+  colorCorrecto = obtenerColorAleatorio();
+  document.getElementById("valor-rgb").textContent = `RGB(${colorCorrecto.r}, ${colorCorrecto.g}, ${colorCorrecto.b})`;
   
-  const correctBoxIndex = Math.floor(Math.random() * numOptions);
+  const indiceCajaCorrecta = Math.floor(Math.random() * numOpciones);
 
-  for (let i = 0; i < numOptions; i++) {
-    const colorBox = document.createElement("div");
-    colorBox.classList.add("color-box");
-    const color = i === correctBoxIndex ? correctColor : getRandomColor();
-    colorBox.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
-    colorBox.dataset.rgb = `${color.r},${color.g},${color.b}`;
-    colorBox.onclick = () => checkAnswer(colorBox);
-    colorOptionsContainer.appendChild(colorBox);
+  for (let i = 0; i < numOpciones; i++) {
+    const cajaColor = document.createElement("div");
+    cajaColor.classList.add("caja-color");
+    const color = i === indiceCajaCorrecta ? colorCorrecto : obtenerColorAleatorio();
+    cajaColor.style.backgroundColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+    cajaColor.dataset.rgb = `${color.r},${color.g},${color.b}`;
+    cajaColor.onclick = () => verificarRespuesta(cajaColor);
+    contenedorOpcionesColor.appendChild(cajaColor);
   }
 }
 
-function checkAnswer(box) {
-  const selectedColor = box.dataset.rgb;
-  const correctColorString = `${correctColor.r},${correctColor.g},${correctColor.b}`;
+function verificarRespuesta(caja) {
+  const colorSeleccionado = caja.dataset.rgb;
+  const colorCorrectoCadena = `${colorCorrecto.r},${colorCorrecto.g},${colorCorrecto.b}`;
 
-  if (selectedColor === correctColorString) {
-    document.getElementById("message").textContent = "Correct! You guessed the right color!";
-    document.getElementById("message").style.color = "green";
+  if (colorSeleccionado === colorCorrectoCadena) {
+    document.getElementById("mensaje").textContent = "¡Correcto! ¡Adivinaste el color correcto!";
+    document.getElementById("mensaje").style.color = "verde";
   } else {
-    lives -= 1;
-    updateLives();
-    document.getElementById("message").textContent = "Incorrect! Try again.";
-    document.getElementById("message").style.color = "red";
-    if (lives === 0) {
-      document.getElementById("message").textContent = "Game Over! You ran out of lives.";
-      disableOptions();
+    vidas -= 1;
+    actualizarVidas();
+    document.getElementById("mensaje").textContent = "¡Incorrecto! Intenta nuevamente.";
+    document.getElementById("mensaje").style.color = "rojo";
+    if (vidas === 0) {
+      document.getElementById("mensaje").textContent = "¡Juego Terminado! Te quedaste sin vidas.";
+      desactivarOpciones();
     }
   }
 }
 
-function updateLives() {
-  document.getElementById("lives").textContent = `Lives: ${lives}`;
+function actualizarVidas() {
+  document.getElementById("vidas").textContent = `Vidas: ${vidas}`;
 }
 
-function disableOptions() {
-  const colorBoxes = document.querySelectorAll(".color-box");
-  colorBoxes.forEach(box => {
-    box.onclick = null;
+function desactivarOpciones() {
+  const cajasColor = document.querySelectorAll(".caja-color");
+  cajasColor.forEach(caja => {
+    caja.onclick = null;
   });
 }
 
-function setDifficulty(level) {
-  difficulty = level;
-  startGame();
+function establecerDificultad(nivel) {
+  dificultad = nivel;
+  iniciarJuego();
 }
 
-function getRandomColor() {
+function obtenerColorAleatorio() {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
   const b = Math.floor(Math.random() * 256);
   return { r, g, b };
 }
 
-startGame();
+iniciarJuego();
