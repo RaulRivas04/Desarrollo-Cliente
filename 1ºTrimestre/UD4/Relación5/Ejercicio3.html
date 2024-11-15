@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Nombre de Usuario</title>
+    <link rel="stylesheet" href="Ejercicio3.css">
+</head>
+<body>
+    <div class="container">
+        <h2>username</h2>
+        <input type="text" id="username" placeholder="Enter username" oninput="validarNombreUsuario()">
+        
+        <ul class="validation-list">
+            <li id="lowercase" class="invalid">1 lowercase character</li>
+            <li id="uppercase" class="invalid">1 uppercase character</li>
+            <li id="minLength" class="invalid">6 minimum characters</li>
+        </ul>
+        
+        <button id="submitBtn" disabled>Submit</button>
+    </div>
+
+    <script src="Ejercicio3.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubo 3D con Orientación de Dispositivo</title>
+    <style>
+        /* Estilos para crear el cubo en 3D */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            perspective: 1000px;
+        }
+
+        .cubo {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            transition: transform 0.1s;
+        }
+
+        .cara {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            color: #fff;
+            font-weight: bold;
+            border: 2px solid #fff;
+        }
+
+        /* Posiciones de las caras */
+        .cara1 { transform: rotateY(0deg) translateZ(100px); }
+        .cara2 { transform: rotateY(90deg) translateZ(100px); }
+        .cara3 { transform: rotateY(180deg) translateZ(100px); }
+        .cara4 { transform: rotateY(-90deg) translateZ(100px); }
+        .cara5 { transform: rotateX(90deg) translateZ(100px); }
+        .cara6 { transform: rotateX(-90deg) translateZ(100px); }
+    </style>
+</head>
+<body>
+    <!-- Contenedor del cubo -->
+    <div class="cubo" id="cubo">
+        <div class="cara cara1">1</div>
+        <div class="cara cara2">2</div>
+        <div class="cara cara3">3</div>
+        <div class="cara cara4">4</div>
+        <div class="cara cara5">5</div>
+        <div class="cara cara6">6</div>
+    </div>
+
+    <script src="pruebamovimiento.js"></script>
+</body>
+</html>

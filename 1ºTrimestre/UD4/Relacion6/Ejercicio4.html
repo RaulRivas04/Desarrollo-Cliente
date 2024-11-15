@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio4 - Manejo de Cookies</title>
+    <script src="Ejercicio4.js" defer></script>
+</head>
+<body>
+    <h1>Ejercicio4 - Manejo de Cookies</h1>
+    <button onclick="CrearCookie('usuario', 'Juan Pérez', new Date(Date.now() + 5 * 60 * 1000))">Crear Cookie</button>
+    <button onclick="alert(LeerCookie('usuario'))">Leer Cookie</button>
+    <button onclick="BorrarCookie('usuario')">Borrar Cookie</button>
+</body>
+</html>

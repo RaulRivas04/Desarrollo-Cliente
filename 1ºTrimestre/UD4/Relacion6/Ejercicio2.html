@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio2 - Personalización con Cookies</title>
+    <script src="Ejercicio2.js" defer></script>
+</head>
+<body>
+    <div id="saludo"></div>
+
+    <div id="configuracion">
+        <h2>Personaliza tu página</h2>
+        
+        <label for="fondoColor">Color de fondo:</label>
+        <input type="color" id="fondoColor"><br><br>
+        
+        <label for="parrafoColor">Color del texto:</label>
+        <input type="color" id="parrafoColor"><br><br>
+        
+        <label for="tamanoLetra">Tamaño de la letra:</label>
+        <input type="number" id="tamanoLetra" min="10" max="50" value="16"> px<br><br>
+        
+        <button onclick="guardarConfiguracion()">Guardar Configuración</button><br><br>
+    </div>
+    
+    <button onclick="borrarCookies()">Cerrar Sesión</button>
+</body>
+</html>
