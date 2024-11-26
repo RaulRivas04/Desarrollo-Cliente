@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+    position: relative;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+#crearNota {
+    background-color: white;
+    color: #007bff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#contenedorNotas {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 150px);
+    background-color: #e0e0e0;
+    overflow: visible;
+    z-index: 1;
+}
+
+.nota {
+    position: absolute;
+    width: 200px;
+    background-color: #fffccc;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: grab;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 99999;
+}
+
+.nota:active {
+    z-index: 100000;
+}
+
+.nota .titulo {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.nota .contenido {
+    margin-bottom: 10px;
+}
+
+.nota .tiempo {
+    font-size: 12px;
+    color: #555;
+}
+
+.nota .eliminarNota {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.nota .eliminarNota:hover {
+    background-color: darkred;
+}
+#bienvenida {
+    background-color: #eef6ff;
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+    text-align: left;
+    z-index: 0;
+    position: relative;
+}
