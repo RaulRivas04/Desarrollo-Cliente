@@ -3,31 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Notas</title>
+    <title>Sticky Notes</title>
     <link rel="stylesheet" href="notas.css">
+    <script src="notas.js" defer></script>
 </head>
 <body>
-    <header>
-        <h1>Gestión de Notas</h1>
-        <button id="crearNota">Crear Nota</button>
-    </header>
-
-    <section id="bienvenida">
-        <div class="texto">
-            <h2>Bienvenido a la Gestión de Notas</h2>
-            <p>Esta aplicación te permite crear, mover y gestionar notas de recordatorio en tu página web. Cada nota es almacenada de forma local en tu navegador usando JSON, asegurando que tus datos estén siempre disponibles mientras uses este dispositivo.</p>
-            <p>Puedes realizar las siguientes acciones:</p>
-            <ul>
-                <li><strong>Crear Notas:</strong> Genera notas con un título y contenido editables.</li>
-                <li><strong>Arrastrar y Soltar:</strong> Mueve las notas libremente en tu pantalla.</li>
-                <li><strong>Editar y Eliminar:</strong> Modifica o elimina notas según sea necesario.</li>
-                <li><strong>Historial:</strong> Observa cuánto tiempo ha pasado desde la creación de una nota.</li>
-            </ul>
-            <p>¡Comienza a organizar tus ideas ahora mismo!</p>
+    <div class="formulario">
+        <h2>Crear una nueva nota</h2>
+        <div class="campos-formulario">
+            <label for="titulo">Título</label> 
+            <input type="text" id="titulo" class="campo-texto" placeholder="Título de la nota"> 
+            <label for="contenido">Contenido</label> 
+            <textarea id="contenido" placeholder="Escribe el contenido de la nota"></textarea> 
+            <button id="crearNota">Añadir Nota</button>
         </div>
-    </section>
-
-    <main id="contenedorNotas"></main>
-    <script src="notas.js"></script>
+    </div>
+    <div id="notasContainer">
+        <h2>Listado de Notas</h2>
+    </div>
 </body>
 </html>

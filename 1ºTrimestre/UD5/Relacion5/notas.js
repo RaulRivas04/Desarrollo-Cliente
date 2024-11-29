@@ -1,73 +1,139 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const contenedorNotas = document.getElementById("contenedorNotas");
-    const crearNotaBtn = document.getElementById("crearNota");
+window.onload = function () {
+    const botonCrear = document.getElementById('crearNota');
+    const inputTitulo = document.getElementById('titulo');
+    const inputContenido = document.getElementById('contenido');
+    const contenedorNotas = document.getElementById('notasContainer');
 
-    let notas = JSON.parse(localStorage.getItem("notas")) || [];
+    let notasGuardadas = JSON.parse(localStorage.getItem('notasGuardadas')) || [];
 
-    const renderNotas = () => {
-        contenedorNotas.innerHTML = "";
-        notas.forEach((nota, index) => {
-            const notaDiv = document.createElement("div");
-            notaDiv.className = "nota";
-            notaDiv.style.left = `${nota.posX}px`;
-            notaDiv.style.top = `${nota.posY}px`;
-            notaDiv.draggable = true;
+    // Función para mover las notas libremente
+    function hacerDraggable(nota, notaObj) {
+        nota.onmousedown = function (evento) {
+            const offsetX = evento.clientX - nota.getBoundingClientRect().left;
+            const offsetY = evento.clientY - nota.getBoundingClientRect().top;
 
-            notaDiv.innerHTML = `
-                <div class="titulo" contenteditable="true">${nota.titulo}</div>
-                <div class="contenido" contenteditable="true">${nota.texto}</div>
-                <div class="tiempo">Creada hace: ${Math.floor(
-                    (new Date() - new Date(nota.creado)) / 60000
-                )} minutos</div>
-                <button class="eliminarNota">Eliminar</button>
-            `;
+            nota.style.position = 'absolute';
+            nota.style.zIndex = 1000;
 
-            notaDiv.querySelector(".eliminarNota").addEventListener("click", () => {
-                eliminarNota(index);
-            });
+            function moverNota(pageX, pageY) {
+                nota.style.left = pageX - offsetX + 'px';
+                nota.style.top = pageY - offsetY + 'px';
+            }
 
-            notaDiv.addEventListener("dragstart", (e) => {
-                e.dataTransfer.setData("text/plain", index);
-            });
+            moverNota(evento.pageX, evento.pageY);
 
-            notaDiv.addEventListener("dragend", (e) => {
-                const rect = contenedorNotas.getBoundingClientRect();
-                notas[index].posX = e.clientX - rect.left;
-                notas[index].posY = e.clientY - rect.top;
+            function moverConMouse(evento) {
+                moverNota(evento.pageX, evento.pageY);
+            }
+
+            document.addEventListener('mousemove', moverConMouse);
+
+            nota.onmouseup = function () {
+                document.removeEventListener('mousemove', moverConMouse);
+                nota.onmouseup = null;
+
+                // Guardar posición de la nota
+                const posX = parseInt(nota.style.left || 0, 10);
+                const posY = parseInt(nota.style.top || 0, 10);
+                notaObj.posX = posX;
+                notaObj.posY = posY;
                 guardarNotas();
-                renderNotas();
-            });
-
-            contenedorNotas.appendChild(notaDiv);
-        });
-    };
-
-    const guardarNotas = () => {
-        localStorage.setItem("notas", JSON.stringify(notas));
-    };
-
-    const eliminarNota = (index) => {
-        notas.splice(index, 1); // Elimina la nota del array
-        guardarNotas();        // Actualiza el localStorage
-        renderNotas();         // Vuelve a renderizar las notas
-    };
-
-    crearNotaBtn.addEventListener("click", () => {
-        const nuevaNota = {
-            titulo: "Nueva Nota",
-            texto: "Contenido de la nota...",
-            creado: new Date().toISOString(),
-            posX: Math.random() * (contenedorNotas.clientWidth - 200),
-            posY: Math.random() * (contenedorNotas.clientHeight - 100),
+            };
         };
-        notas.push(nuevaNota);
+
+        nota.ondragstart = function () {
+            return false;
+        };
+    }
+
+    // Crear una nueva nota
+    function agregarNota(notaObj) {
+        const nuevaNota = document.createElement('div');
+        nuevaNota.className = 'nota';
+        nuevaNota.style.left = (notaObj.posX || 0) + 'px';
+        nuevaNota.style.top = (notaObj.posY || 0) + 'px';
+
+   nuevaNota.innerHTML = `
+   <h3 contenteditable="true" class="editable">${notaObj.titulo}</h3>
+   <p contenteditable="true" class="editable">${notaObj.contenido}</p>
+   <span class="tiempo" data-timestamp="${notaObj.timestamp}">Creada hace 0 minutos</span>
+   <button class="eliminar">Eliminar</button>
+`;
+        contenedorNotas.appendChild(nuevaNota);
+
+        // Nota draggable
+        hacerDraggable(nuevaNota, notaObj);
+
+        // Actualizar el tiempo transcurrido
+        actualizarTiempo(nuevaNota);
+
+        // Campos editables y guardar cambios
+        const camposEditables = nuevaNota.querySelectorAll('.editable');
+        camposEditables.forEach(function (campo, index) {
+            campo.addEventListener('input', function () {
+                if (index === 0) notaObj.titulo = campo.textContent;
+                if (index === 1) notaObj.contenido = campo.textContent;
+                guardarNotas();
+            });
+        });
+
+        // Botón de eliminación
+        const botonEliminar = nuevaNota.querySelector('.eliminar');
+        botonEliminar.addEventListener('click', function () {
+            nuevaNota.remove();
+            notasGuardadas = notasGuardadas.filter(function (n) {
+                return n.timestamp !== notaObj.timestamp;
+            });
+            guardarNotas();
+        });
+    }
+
+    // Guardar notas en LocalStorage
+    function guardarNotas() {
+        localStorage.setItem('notasGuardadas', JSON.stringify(notasGuardadas));
+    }
+
+    // Crear nota desde el formulario
+    botonCrear.addEventListener('click', function () {
+        const titulo = inputTitulo.value.trim();
+        const contenido = inputContenido.value.trim();
+
+        if (!titulo || !contenido) {
+            console.error('Por favor, completa todos los campos.');
+            return;
+        }
+
+        const nuevaNotaObj = {
+            titulo: titulo,
+            contenido: contenido,
+            timestamp: Date.now(),
+            posX: 0,
+            posY: 0
+        };
+
+        notasGuardadas.push(nuevaNotaObj);
         guardarNotas();
-        renderNotas();
+
+        agregarNota(nuevaNotaObj);
+
+        inputTitulo.value = '';
+        inputContenido.value = '';
     });
 
-    contenedorNotas.addEventListener("dragover", (e) => {
-        e.preventDefault();
-    });
+    // Mostrar tiempo transcurrido
+    function actualizarTiempo(nota) {
+        const elementoTiempo = nota.querySelector('.tiempo');
+        const timestamp = parseInt(elementoTiempo.dataset.timestamp, 10);
 
-    renderNotas();
-});
+        function actualizar() {
+            const minutosTranscurridos = Math.floor((Date.now() - timestamp) / 60000);
+            elementoTiempo.textContent = 'Creada hace ' + minutosTranscurridos + ' minutos';
+        }
+
+        actualizar();
+        setInterval(actualizar, 60000);
+    }
+
+    // Cargar notas desde LocalStorage
+    notasGuardadas.forEach(agregarNota);
+};
