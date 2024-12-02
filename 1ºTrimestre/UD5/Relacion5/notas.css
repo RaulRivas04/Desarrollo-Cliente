@@ -1,79 +1,151 @@
-/* Estilos generales */
+/* Estilo General */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f4f7fb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
 }
 
-/* Contenedor de notas */
-#notasContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-/* Estilo de la nota */
-.nota {
-  background: #f9f261;
-  border-radius: 10px;
-  padding: 15px;
-  width: 220px;
-  min-height: 180px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  cursor: grab;
-  position: absolute;
-  transition: box-shadow 0.3s, transform 0.2s;
-}
-
-.nota:hover {
-  transform: scale(1.05);
-}
-
-/* Título y contenido de la nota */
-.nota h3 { font-size: 1.1rem; margin: 0; }
-.nota p { font-size: 0.9rem; margin-top: 10px; }
-
-/* Botón de eliminar */
-.nota .eliminar {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 8px;
-  width: 100%;
-  border-radius: 5px;
-  cursor: pointer;
+/* Encabezados */
+h1, h2 {
+    text-align: center;
+    color: #f0f0f0;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
 /* Formulario */
-#formulario {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  margin-bottom: 30px;
+.formulario {
+    background: #3a3a3a;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    margin: 30px auto;
+    padding: 20px;
 }
 
-#formulario input, #formulario textarea, #formulario button {
-  padding: 12px;
-  margin-bottom: 15px;
-  width: 100%;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+.formulario h2 {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 20px;
 }
 
-#formulario button {
-  background: #2ecc71;
-  color: white;
+.campos-formulario label {
+    font-weight: 500;
+    margin-top: 10px;
+    display: block;
+    color: #ccc;
 }
 
-/* Responsividad */
-@media (max-width: 768px) {
-  .nota { position: static; }
+/* Título y descripción del formulario en blanco */
+.campo-texto,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: #ffffff;
+    color: #333;
+    transition: border-color 0.3s ease;
+}
+
+.campo-texto:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ffc107;
+}
+
+textarea {
+    resize: vertical;
+    height: 120px;
+}
+
+button {
+    display: inline-block;
+    background-color: #ffc107;
+    color: #333;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #e0a800;
+}
+
+/* Contenedor de Notas */
+#notasContainer {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+/* Estilo de una Nota */
+.nota {
+    background: #fffd87;
+    border: 1px solid #ffd700;
+    border-radius: 8px;
+    padding: 15px;
+    width: 240px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Título de la nota */
+.nota h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+    word-break: break-word;
+}
+
+/* Descripción de la nota */
+.nota p {
+    font-size: 1rem;
+    margin: 10px 0;
+    color: #444;
+    word-break: break-word;
+}
+
+/* Tiempo de creación */
+.nota .tiempo {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 10px 0 0;
+    display: block;
+}
+
+/* Botón Eliminar */
+.nota .eliminar {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.nota .eliminar:hover {
+    background-color: #c0392b;
 }
