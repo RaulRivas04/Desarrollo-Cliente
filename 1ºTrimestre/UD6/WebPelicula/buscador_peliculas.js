@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Fetch películas, series o videojuegos
     async function fetchPeliculas(query, page, type) {
         try {
-            const url = `http://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=${type !== "all" ? type : ""}&apikey=5edefc4c&page=${page}`;
+            const url = `https://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=${type !== "all" ? type : ""}&apikey=5edefc4c&page=${page}`;
             const res = await fetch(url);
             const data = await res.json();
             if (data.Response === "True") {
@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Mostrar detalles
     async function mostrarDetalles(imdbID) {
         try {
-            const res = await fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=5edefc4c`);
+            const res = await fetch(`https://www.omdbapi.com/?i=${imdbID}&apikey=5edefc4c`);
             const data = await res.json();
             if (data.Response === "True") {
                 modalBody.innerHTML = `
