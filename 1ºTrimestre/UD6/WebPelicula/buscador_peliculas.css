@@ -276,3 +276,84 @@ h1 {
 #reportChart {
     margin-top: 20px;
 }
+
+/* Vista móvil */
+@media (max-width: 768px) {
+    /* Título */
+    h1 {
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Contenedor principal */
+    #landingPage {
+        padding: 40px 10px;
+    }
+
+    /* Imágenes de las películas */
+    .pelicula-item {
+        width: 90%;
+        max-width: 280px;
+        margin: 10px auto;
+    }
+
+    .pelicula-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+
+    /* Botones */
+    #landingPage button, 
+    #createReportButton {
+        width: auto;
+        padding: 10px 20px;
+        font-size: 14px;
+        margin: 5px 0;
+    }
+
+    /* Modal de detalles */
+    .modal-content {
+        width: 90%;
+        max-width: 350px;
+        padding: 10px;
+    }
+
+    #modalImage {
+        max-width: 100%;
+        max-height: 140px;
+        margin-bottom: 10px;
+    }
+
+    /* Informes */
+    #reportSection {
+        width: 90%;
+        max-width: 450px;
+        padding: 10px;
+        margin: 0 auto;
+    }
+
+    #reportContent h3 {
+        font-size: 14px;
+    }
+
+    /* Barra de búsqueda */
+    .search-container {
+        flex-direction: column;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    #filterType, #searchInput {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    /* Botón de crear informe */
+    #createReportButton {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+}
