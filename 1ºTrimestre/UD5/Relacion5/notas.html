@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sticky Notes</title>
+    <link rel="stylesheet" href="notas.css">
+    <script src="notas.js" defer></script>
+</head>
+<body>
+    <div class="formulario">
+        <h2>Crear una nueva nota</h2>
+        <div class="campos-formulario">
+            <label for="titulo">Título</label> 
+            <input type="text" id="titulo" class="campo-texto" placeholder="Título de la nota"> 
+            <label for="contenido">Contenido</label> 
+            <textarea id="contenido" placeholder="Escribe el contenido de la nota"></textarea> 
+            <button id="crearNota">Añadir Nota</button>
+        </div>
+    </div>
+    <div id="notasContainer">
+        <h2>Listado de Notas</h2>
+    </div>
+</body>
+</html>
