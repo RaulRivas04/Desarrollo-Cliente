@@ -10,12 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("searchInput");
     const filterType = document.getElementById("filterType");
     const reportSection = document.getElementById("reportSection");
-    const reportContent = document.getElementById("reportContent");
-    const reportChart = document.getElementById("reportChart");
+    const createReportButton = document.getElementById("createReportButton");
 
     let queryGlobal = "";
     let paginaActual = 1;
-    let peliculasActuales = [];
     let allData = [];
 
     // Navegar desde la landing a la búsqueda
@@ -29,15 +27,37 @@ document.addEventListener("DOMContentLoaded", () => {
         queryGlobal = searchInput.value.trim();
         if (queryGlobal.length < 3) return;
 
+        // Resetear la paginación y la lista
         paginaActual = 1;
+        allData = [];
         loader.style.display = "block";
         const filter = filterType.value;
         const peliculas = await fetchPeliculas(queryGlobal, paginaActual, filter);
         loader.style.display = "none";
         renderPeliculas(peliculas, true);
+
+        // Botón para crear el informe después de la búsqueda
+        createReportButton.style.display = "block";
     });
 
-    // Scroll infinito para cargar más resultados
+    // Cambiar el filtro sin perder la búsqueda actual
+    filterType.addEventListener("change", async () => {
+        const filter = filterType.value;
+        if (queryGlobal.length >= 3) {
+            paginaActual = 1;
+            allData = [];
+
+            // Mostrar el loader al cambiar el filtro
+            loader.style.display = "block";
+            const peliculas = await fetchPeliculas(queryGlobal, paginaActual, filter);
+
+            // Ocultar el loader cuando termine de cargar
+            loader.style.display = "none";
+            renderPeliculas(peliculas, true);
+        }
+    });
+
+    // Scroll infinito
     window.addEventListener("scroll", async () => {
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && queryGlobal) {
             paginaActual++;
@@ -54,7 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.display = "none";
     });
 
-    // Fetch películas o series
+    // Cerrar el modal al hacer click afuera de el
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // Fetch películas, series o videojuegos
     async function fetchPeliculas(query, page, type) {
         try {
             const url = `http://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=${type !== "all" ? type : ""}&apikey=5edefc4c&page=${page}`;
@@ -63,8 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.Response === "True") {
                 const enhancedData = data.Search.map((movie) => ({
                     ...movie,
-                    Votes: Math.floor(Math.random() * 50000), // Simula votos
-                    BoxOffice: Math.floor(Math.random() * 200) + "M", // Simula recaudación
+                    //Votos
+                    Votes: Math.floor(Math.random() * 50000),
+                    //Rating IMDb
+                    imdbRating: Math.random() * 10,
+                    //Recaudación
+                    BoxOffice: Math.floor(Math.random() * 200) + "M"
                 }));
                 allData = [...allData, ...enhancedData];
                 return enhancedData;
@@ -77,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Renderizar películas/series
+    // Renderizar películas/series/videojuegos
     function renderPeliculas(peliculas, limpiar) {
         if (limpiar) lista.innerHTML = "";
 
@@ -108,6 +139,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.Response === "True") {
                 modalBody.innerHTML = `
                     <h2>${data.Title} (${data.Year})</h2>
+                    <div id="modalImageContainer">
+                        <img id="modalImage" src="${data.Poster !== "N/A" ? data.Poster : "https://via.placeholder.com/300x450?text=Imagen+No+Disponible"}" alt="${data.Title}">
+                    </div>
                     <p><strong>Director:</strong> ${data.Director || "No disponible"}</p>
                     <p><strong>Actores:</strong> ${data.Actors || "No disponible"}</p>
                     <p><strong>Género:</strong> ${data.Genre || "No disponible"}</p>
@@ -119,42 +153,102 @@ document.addEventListener("DOMContentLoaded", () => {
                 modal.style.display = "flex";
             }
         } catch (error) {
-            console.error("Error al mostrar detalles:", error);
+            console.error("Error al obtener detalles:", error);
         }
     }
 
-    // Crear informe
-    async function crearInforme() {
-        reportSection.style.display = "block";
+    // Función para manejar la creación de informes
+    createReportButton.addEventListener("click", async () => {
+        if (allData.length === 0) {
+            alert("No hay datos disponibles para generar el informe.");
+            return;
+        }
 
-        const topImdb = allData
-            .sort((a, b) => parseFloat(b.imdbRating || 0) - parseFloat(a.imdbRating || 0))
-            .slice(0, 5);
-        const topVotes = allData.sort((a, b) => b.Votes - a.Votes).slice(0, 5);
-        const topBoxOffice = allData.sort((a, b) => parseFloat(b.BoxOffice) - parseFloat(a.BoxOffice)).slice(0, 5);
+        // Obtener el tipo de filtro seleccionado
+        const filtroSeleccionado = document.getElementById("filterType").value;
 
-        reportContent.innerHTML = `
-            <h3>Películas más valoradas (IMDb)</h3>
-            <ul>${topImdb.map((p) => `<li>${p.Title} (${p.imdbRating})</li>`).join("")}</ul>
-            <h3>Películas más votadas</h3>
-            <ul>${topVotes.map((p) => `<li>${p.Title} (${p.Votes} votos)</li>`).join("")}</ul>
-            <h3>Películas con mayor recaudación</h3>
-            <ul>${topBoxOffice.map((p) => `<li>${p.Title} (${p.BoxOffice})</li>`).join("")}</ul>
+        let filteredData = [];
+
+        if (filtroSeleccionado === "all") {
+            // Combinar las películas, series y videojuegos
+            const peliculas = await fetchPeliculas(queryGlobal, 1, "movie");
+            const series = await fetchPeliculas(queryGlobal, 1, "series");
+            const videojuegos = await fetchPeliculas(queryGlobal, 1, "game");
+
+            filteredData = [...peliculas, ...series, ...videojuegos];
+        } else {
+            // Filtrar según el tipo seleccionado
+            filteredData = allData.filter(item => item.Type === filtroSeleccionado);
+        }
+
+        // Filtrar las 5 mejores según diferentes criterios
+        const topImdb = filteredData.sort((a, b) => b.imdbRating - a.imdbRating).slice(0, 5);
+        const topVotes = filteredData.sort((a, b) => b.Votes - a.Votes).slice(0, 5);
+        const topBoxOffice = filteredData.sort((a, b) => parseInt(b.BoxOffice.replace(/[^\d]/g, "")) - parseInt(a.BoxOffice.replace(/[^\d]/g, ""))).slice(0, 5);
+
+        // Definir el título del informe según el filtro seleccionado
+        let informeTitulo = "Informe de Todo";
+        if (filtroSeleccionado === "series") {
+            informeTitulo = "Informe de Series";
+        } else if (filtroSeleccionado === "game") {
+            informeTitulo = "Informe de Videojuegos"; 
+        } else if (filtroSeleccionado === "movie") {
+            informeTitulo = "Informe de Películas";
+        }
+
+        // Generar el informe en HTML
+        const informeHTML = `
+            <h2>${informeTitulo}</h2>
+            <h3>Elementos con mejor puntuación en IMDb:</h3>
+            <ul>
+                ${topImdb.map(item => `<li>${item.Title} - Puntuación IMDb: ${item.imdbRating}</li>`).join("")}
+            </ul>
+            <h3>Elementos con mayor recaudación:</h3>
+            <ul>
+                ${topBoxOffice.map(item => `<li>${item.Title} - Recaudación: ${item.BoxOffice}</li>`).join("")}
+            </ul>
+            <h3>Elementos más votados:</h3>
+            <ul>
+                ${topVotes.map(item => `<li>${item.Title} - Votos: ${item.Votes}</li>`).join("")}
+            </ul>
+            <canvas id="imdbChart" style="margin-top: 20px;"></canvas>
+            <canvas id="boxOfficeChart" style="margin-top: 20px;"></canvas>
+            <canvas id="votesChart" style="margin-top: 20px;"></canvas>
         `;
 
-        const ctx = reportChart.getContext("2d");
+        // Mostrar el informe en el modal
+        modalBody.innerHTML = informeHTML;
+        modal.style.display = "flex";
+
+        // Creacion de gráficas
+        crearGrafico(topImdb, 'imdbChart', 'Puntuación IMDb');
+        crearGrafico(topBoxOffice, 'boxOfficeChart', 'Recaudación');
+        crearGrafico(topVotes, 'votesChart', 'Votos');
+    });
+
+    // Función para crear gráficos de barras
+    function crearGrafico(data, canvasId, label) {
+        const ctx = document.getElementById(canvasId).getContext("2d");
+        const chartData = {
+            labels: data.map(item => item.Title),
+            datasets: [{
+                label: label,
+                data: data.map(item => item.imdbRating || item.BoxOffice.replace(/[^\d]/g, "") || item.Votes),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        };
         new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: topImdb.map((p) => p.Title),
-                datasets: [
-                    {
-                        label: "IMDb Rating",
-                        data: topImdb.map((p) => parseFloat(p.imdbRating || 0)),
-                        backgroundColor: "rgba(0, 123, 255, 0.7)",
-                    },
-                ],
-            },
+            type: 'bar',
+            data: chartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
     }
 });
