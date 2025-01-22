@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong SVG</title>
+    <link rel="stylesheet" href="pong-game.css">
+</head>
+<body>
+    <svg id="pong" width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+        <rect id="leftPaddle" x="0" y="150" width="10" height="100" fill="white" />
+        <rect id="rightPaddle" x="790" y="150" width="10" height="100" fill="white" />
+        <circle id="ball" cx="400" cy="200" r="10" fill="white" />
+        <line x1="400" y1="0" x2="400" y2="400" stroke="white" stroke-dasharray="10 15" />
+
+        <text id="leftScore" x="200" y="30" fill="white" font-size="30" text-anchor="middle">0</text>
+        <text id="rightScore" x="600" y="30" fill="white" font-size="30" text-anchor="middle">0</text>
+    </svg>
+
+    <script src="pong-game.js" defer></script>
+</body>
+</html>

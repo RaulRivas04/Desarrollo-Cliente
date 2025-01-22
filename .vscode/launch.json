@@ -1,0 +1,14 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Open Buscador-Peliculas.html",
+            "file": "c:\\Users\\PC NOX CUARTO\\Desktop\\2º DAW\\Desarrollo Cliente\\1ºTrimestre\\UD6\\Buscador-Peliculas.html"
+        }
+    ]
+}

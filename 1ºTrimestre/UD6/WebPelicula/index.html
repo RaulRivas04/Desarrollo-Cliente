@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscador de Películas y Series</title>
+  <link rel="stylesheet" href="buscador_peliculas.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Landing Page -->
+  <div id="landingPage" class="landing-page">
+    <h1>BIENVENIDO AL BUSCADOR DE PELÍCULAS Y SERIES</h1>
+    <p>Descubre y explora información detallada sobre tus películas y series favoritas.</p>
+    <p>Puedes buscar por título, ver detalles y explorar más opciones con nuestra sencilla interfaz.</p>
+    <button id="startSearch">Comenzar Búsqueda</button>
+  </div>
+
+  <!-- Sección de búsqueda -->
+  <div id="searchSection" class="search-section" style="display: none;">
+    <header>
+      <h1 id="titulo">Buscador de Películas y Series</h1>
+    </header>
+
+    <!-- Filtro -->
+    <main>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Escribe el nombre de la película o serie">
+        <select id="filterType">
+          <option value="all">Todo</option>
+          <option value="movie">Películas</option>
+          <option value="series">Series</option>
+          <option value="game">Videojuegos</option>
+        </select>
+        <button id="createReportButton" style="display: none;">Crear Informe</button>
+      </div>
+      
+      <!-- Botón para Crear Informe -->
+      <button id="createReportButton" style="display: none;" class="create-report-btn">Crear Informe</button>
+
+      <!-- Indicador de carga -->
+      <div id="loader" class="hidden">
+        <div class="loader-circle"></div>
+      </div>
+
+      <!-- Lista de películas o series -->
+      <ul id="lista"></ul>
+    </main>
+
+    <!-- Modal para detalles -->
+    <div id="modal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <div id="modalBody"></div>
+      </div>
+    </div>
+
+    <!-- Modal para Informe -->
+    <div id="reportModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span id="closeReportModal" class="close">&times;</span>
+        <div id="reportModalBody">
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de informes -->
+    <section id="reportSection" style="display: none;">
+      <h2>Informe de Películas y Series</h2>
+      <div id="reportContent"></div>
+      <canvas id="reportChart" width="400" height="200"></canvas>
+    </section>
+  </div>
+
+  <script src="buscador_peliculas.js" defer></script>
+</body>
+</html>
