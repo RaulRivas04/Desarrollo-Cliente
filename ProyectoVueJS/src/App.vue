@@ -23,7 +23,7 @@ router.beforeEach(async (to) => {
         return { path: '/login', query: { message: 'Debes iniciar sesión para acceder a esta página' } }; // Redirige al usuario
       } else {
         console.log("Usuario autenticado, permitiendo navegación");
-        return true; // Permite la navegación si el usuario está autenticado
+        return true;
       }
     } else {
       return true; // Permite la navegación si no se requiere autenticación
